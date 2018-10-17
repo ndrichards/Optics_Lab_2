@@ -1,15 +1,13 @@
 from numpy import *
 from scipy import optimize
 import matplotlib.pyplot as plt
+import pandas as pd
 import os
 
 def dataset_func():
     dataset = []
     for f in os.listdir('/Users/lucas/Documents/Optics/Lab_Notes/Optics_Lab_2-master/'):
-        data = genfromtxt('/Users/lucas/Documents/Optics/Lab_Notes/Optics_Lab_2-master/%s' % (f,))
-        data = data.astype(str)
-        data = insert(data,0,f[:-4],axis=0)
-        dataset.append(data)
+        data = pd.read_csv('/Users/lucas/Documents/Optics/Lab_Notes/Optics_Lab_2-master/%s' % (f,))
     dataset = pd.DataFrame(dataset)
     dataset = dataset.T
     for index in dataset.columns:
@@ -41,11 +39,33 @@ def fit(T_measured,Resistance,p0):
     chi = chi_sq(L(Resistance,*popt),T_measured)
     return popt, err, chi
 
+dataset = []
+for f in os.listdir('/Users/lucas/Documents/Optics/Lab_Notes/Optics_Lab_2-master/'):
+    data = genfromtxt('/Users/lucas/Documents/Optics/Lab_Notes/Optics_Lab_2-master/%s' % (f,))
+    dataset.append(data[:,0])
+    dataset.append(data[:,1])
+dataset = pd.DataFrame(dataset)
+dataset = dataset.T
+x = genfromtxt('/Users/lucas/Documents/Optics/Lab_Notes/Optics_Lab_2-master/outdoors.txt')
+x[:,]
+
+dataset[0] = dataset['outdoors_']
 
 
 
-dataset.head()
-plt.plot(dataset['Temperature'], dataset['Resistance'])
+
+
+
+
+
+
+
+
+
+
+dataset
+dataset
+plt.plot(dataset[0], dataset[1])
 
 p0 = (1.,1.,1.)
 args, err, chi = = fit(T_measured,Resistance,p0)
